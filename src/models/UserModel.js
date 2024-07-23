@@ -1,4 +1,4 @@
-import UserSchema from "./UserSchema.js";
+import UserSchema from "../schema/UserSchema.js";
 
 /*CREATE*/
 export const insertUser = (user) => {
@@ -13,7 +13,7 @@ export const getUserByEmail = (email) => {
 }
 
 export const getAUser = (filter) => {
-    return UserSchema.findOne( filter );
+    return UserSchema.findOne(filter);
 }
 
 export const getUsers = () => {

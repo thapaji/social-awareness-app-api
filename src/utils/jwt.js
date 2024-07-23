@@ -1,6 +1,6 @@
 import JWT from "jsonwebtoken";
-import { insertToken } from "../models/session/SessionModel.js";
-import { updateUser } from "../models/users/UserModel.js";
+import { insertToken } from "../models/SessionModel.js";
+import { updateUser } from "../models/UserModel.js";
 
 
 /*************** Create access JWt *******************/

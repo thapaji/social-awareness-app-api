@@ -1,10 +1,10 @@
 import express from "express";
 import { comparePassword, hashPassword } from "../utils/bcrypt.js";
-import { getAUser, getUserByEmail, insertUser, updateUser } from "../models/users/UserModel.js";
+import { getAUser, getUserByEmail, insertUser, updateUser } from "../models/UserModel.js";
 import { newUserValidation } from "../middlewares/joiValidation.js";
 import { getTokens, signAccessToken, signRefreshJWT, verifyAccessJWT, verifyRefreshJWT } from "../utils/jwt.js";
 import { auth } from "../middlewares/auth.js";
-import { deleteManySession, deleteSession, insertToken } from "../models/session/SessionModel.js";
+import { deleteManySession, deleteSession, insertToken } from "../models/SessionModel.js";
 import { v4 as uuidv4 } from 'uuid'
 import { emailOTP, emailVerificationMail } from "../services/email/nodemailer.js";
 import { otpGenerator } from "../utils/OtpGenerator.js";
