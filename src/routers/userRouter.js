@@ -87,23 +87,23 @@ router.post('/login', async (req, res, next) => {
     }
     const user = await getUserByEmail(email);
     if (user?._id) {
-      if (!user?.isEmailVerified) {
-        return res.json({
-          status: "error",
-          message: "Please verify your email.",
-        })
-      } else if (user?.status === 'inactive') {
-        return res.json({
-          status: "error",
-          message: "Your account is locked. Please contact the administrator",
-        })
-      }
+      // if (!user?.isEmailVerified) {
+      //   return res.json({
+      //     status: "error",
+      //     message: "Please verify your email.",
+      //   })
+      // } else if (user?.status === 'inactive') {
+      //   return res.json({
+      //     status: "error",
+      //     message: "Your account is locked. Please contact the administrator",
+      //   })
+      // }
       const isMatch = comparePassword(password, user.password);
       if (isMatch) {
         return res.json({
           status: 'success',
           message: 'user logged in',
-          tokens: getTokens(email)
+          // tokens: getTokens(email)
         })
       }
     }

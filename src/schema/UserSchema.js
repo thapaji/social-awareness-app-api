@@ -1,14 +1,10 @@
 import mongoose from 'mongoose'
 
 const UserSchema = new mongoose.Schema({
-    fname: {
+    name: {
         type: String,
         required: true,
         maxLength: [20, 'Long names are not allowed']
-    },
-    lname: {
-        type: String,
-        required: true,
     },
     email: {
         type: String,
@@ -16,10 +12,10 @@ const UserSchema = new mongoose.Schema({
         index: 1,
         required: true,
     },
-    status: {
-        type: String,
-        default: 'inactive',
-    },
+    // status: {
+    //     type: String,
+    //     default: 'inactive',
+    // },
     role: {
         type: String,
         default: 'user',
@@ -27,10 +23,6 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    },
-    isEmailVerified: {
-        type: Boolean,
-        default: false
     },
     refreshJWT: {
         type: String,

@@ -30,8 +30,7 @@ const validator = ({ req, res, next, schema }) => {
 export const newUserValidation = (req, res, next) => {
 
     const schema = Joi.object({
-        fname: SHORT_STR_REQ,
-        lname: SHORT_STR_REQ,
+        name: SHORT_STR_REQ,
         email: EMAIL_REQ,
         password: SHORT_STR_REQ,
     });

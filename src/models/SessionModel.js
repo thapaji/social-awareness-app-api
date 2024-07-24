@@ -1,4 +1,4 @@
-import UserSchema from "../schema/SessionSchema.js";
+import SessionSchema from "../schema/SessionSchema.js";
 
 export const insertToken = (obj) => {
     console.log(obj)

@@ -2,7 +2,7 @@ import userRouter from "./userRouter.js";
 
 export default [
     {
-        path: '/api/v1/users',
+        path: '/api/users',
         middlewares: [userRouter],
     },
 ]
