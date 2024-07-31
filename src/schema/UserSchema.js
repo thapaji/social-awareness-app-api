@@ -12,10 +12,10 @@ const UserSchema = new mongoose.Schema({
         index: 1,
         required: true,
     },
-    // status: {
-    //     type: String,
-    //     default: 'inactive',
-    // },
+    status: {
+        type: String,
+        default: 'notverified',
+    },
     role: {
         type: String,
         default: 'user',
@@ -34,4 +34,4 @@ const UserSchema = new mongoose.Schema({
     }
 )
 
-export default mongoose.model('users', UserSchema)
+export default mongoose.model('Users', UserSchema)

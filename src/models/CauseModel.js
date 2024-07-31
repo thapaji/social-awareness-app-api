@@ -1,27 +1,12 @@
 import CauseSchema from "../schema/CauseSchema.js";
+import { insertOne, findOne, findAll, updateById, deleteMany } from './commonModelFunctions.js';
 
-export const insertCause = (cause) => {
-    console.log(cause)
-    return CauseSchema(cause).save();
-}
+export const insertCause = (cause) => insertOne(CauseSchema, cause);
 
+export const getACause = (filter) => findOne(CauseSchema, filter);
 
+export const getAllCauses = () => findAll(CauseSchema);
 
-export const getACause = (filter) => {
-    return CauseSchema.findOne(filter);
-}
+export const updateCauseById = ({ _id, obj }) => updateById(CauseSchema, _id, obj);
 
-export const getAllCauses = () => {
-    return CauseSchema.find();
-}
-
-
-export const updateCauseById = async ({ _id, obj }) => {
-    console.log(obj);
-    return await CauseSchema.findByIdAndUpdate(_id, obj);
-}
-
-
-export const deleteCause = (ids) => {
-    return CauseSchema.deleteMany({ _id: { $in: ids } });
-}
+export const deleteCause = (ids) => deleteMany(CauseSchema, ids);

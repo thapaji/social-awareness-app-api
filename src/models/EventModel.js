@@ -1,24 +1,12 @@
 import EventSchema from "../schema/EventSchema.js";
+import { insertOne, findOne, findAll, updateById, deleteMany } from './commonModelFunctions.js';
 
+export const insertEvent = (event) => insertOne(EventSchema, event);
 
-export const insertEvent = (event) => {
-    console.log(event)
-    return EventSchema(event).save();
-}
+export const getAnEvent = (filter) => findOne(EventSchema, filter);
 
-export const getAEvent = (filter) => {
-    return EventSchema.findOne(filter);
-}
+export const getAllEvents = () => findAll(EventSchema);
 
-export const getAllEvents = () => {
-    return EventSchema.find();
-}
+export const updateEventById = ({ _id, obj }) => updateById(EventSchema, _id, obj);
 
-export const updateEventById = async ({ _id, obj }) => {
-    console.log(obj);
-    return await EventSchema.findByIdAndUpdate(_id, obj);
-}
-
-export const deleteEvent = (ids) => {
-    return EventSchema.deleteMany({ _id: { $in: ids } });
-}
+export const deleteEvent = (ids) => deleteMany(EventSchema, ids);

@@ -1,30 +1,51 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const CauseSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        required: [true, 'Title is required'],
+        trim: true,
+        maxlength: [100, 'Title cannot exceed 100 characters']
     },
     description: {
         type: String,
-        required: true,
+        required: [true, 'Description is required'],
+        trim: true,
+        maxlength: [1000, 'Description cannot exceed 1000 characters']
     },
     category: {
         type: String,
-        required: true,
+        required: [true, 'Category is required'],
+        enum: ['Education', 'Health', 'Environment', 'Social'],
     },
     createdBy: {
         type: String,
-        required: true,
+        ref: 'User',
+        required: [true, 'Created by is required'],
     },
-    participants: {
-        type: String,
-        default: 'user',
-    },
-},
-    {
-        timestamps: true,
-    }
-)
+    participants: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: [true, 'User ID is required']
+        },
+        username: {
+            type: String,
+            required: true,
+        }
+    }],
+    comments: [{
+        username: {
+            type: String,
+            required: true,
+        },
+        comment: {
+            type: String,
+            default: '',
+        }
+    }],
+}, {
+    timestamps: true,
+});
 
-export default mongoose.model('cause', CauseSchema)
+export default mongoose.model('Causes', CauseSchema);

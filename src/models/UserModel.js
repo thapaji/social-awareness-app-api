@@ -1,38 +1,12 @@
 import UserSchema from "../schema/UserSchema.js";
+import { findOne, findById, insertOne, updateOne, deleteMany } from './commonModelFunctions.js';
 
-/*CREATE*/
-export const insertUser = (user) => {
-    console.log(user)
-    return UserSchema(user).save();
-}
+export const insertUser = (user) => insertOne(UserSchema, user);
 
-/*READ*/
-export const getUserByEmail = (email) => {
-    console.log(email)
-    return UserSchema.findOne({ email });
-}
+export const getUserByEmail = (email) => findOne(UserSchema, { email });
 
-export const getAUser = (filter) => {
-    return UserSchema.findOne(filter);
-}
+export const getAUser = (filter) => findOne(UserSchema, filter);
 
-export const getUsers = () => {
-    return UserSchema.find();
-}
+export const updateUser = (filter, update) => updateOne(UserSchema, filter, update);
 
-/*UPDATE*/
-
-export const updateUserById = async ({ _id, obj }) => {
-    console.log(obj);
-    return await UserSchema.findByIdAndUpdate(_id, obj);
-}
-
-export const updateUser = async (filter, obj) => {
-    console.log(obj);
-    return await UserSchema.findOneAndUpdate(filter, obj);
-}
-
-/*DELETE ONE or  MANY*/
-export const deleteUser = (ids) => {
-    return UserSchema.deleteMany({ _id: { $in: ids } });
-}
+export const deleteUser = (ids) => deleteMany(UserSchema, ids);

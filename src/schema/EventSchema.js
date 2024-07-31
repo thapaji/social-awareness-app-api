@@ -9,9 +9,16 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    causeId: {
-        type: String,
-        required: true,
+    cause: {
+        causeId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'cause',
+        },
+        causeTitle: {
+            type: String,
+            required: true,
+        }
     },
     date: {
         type: Date,
@@ -21,14 +28,31 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    participants: {
-        type: String,
-        default: 'user',
-    },
+    participants: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: [true, 'User ID is required']
+        },
+        username: {
+            type: String,
+            required: true,
+        }
+    }],
+    comments: [{
+        username: {
+            type: String,
+            required: true,
+        },
+        comment: {
+            type: String,
+            default: '',
+        }
+    }],
 },
     {
         timestamps: true,
     }
 )
 
-export default mongoose.model('event', EventSchema)
+export default mongoose.model('Events', EventSchema)
