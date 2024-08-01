@@ -7,7 +7,7 @@ import {
 import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 import { v4 as uuidv4 } from 'uuid';
 import { deleteManySession, deleteSession, insertToken } from "../models/SessionModel.js";
-// import { emailVerificationMail, emailOTP } from '../utils/mailUtils.js';
+import { emailVerificationMail, emailOTP } from '../utils/mailUtils.js';
 import { newUserValidation } from '../middlewares/joiValidation.js';
 import { auth } from '../middlewares/auth.js'
 import { requestHandler } from '../utils/requestHandler.js';
