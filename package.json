@@ -10,6 +10,8 @@
     "dev": "nodemon --env-file=.env server.js"
   },
   "dependencies": {
+    "@clerk/backend": "^1.6.2",
+    "@clerk/clerk-sdk-node": "^5.0.26",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",

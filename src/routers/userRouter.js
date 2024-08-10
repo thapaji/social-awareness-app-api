@@ -11,8 +11,82 @@ import { emailVerificationMail, emailOTP } from '../utils/mailUtils.js';
 import { newUserValidation } from '../middlewares/joiValidation.js';
 import { auth } from '../middlewares/auth.js'
 import { requestHandler } from '../utils/requestHandler.js';
+import { createClerkClient } from '@clerk/backend';
 
 const router = express.Router();
+
+
+console.log(process.env.CLERK_FRONTEND_API)
+console.log(process.env.CLERK_SECRET_KEY)
+
+const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+
+router.get('/', async (req, res) => {
+    const { authorization } = req.headers;
+    const operation = async () => {
+        const userList = await clerkClient.users.getUserList();
+        const users = userList.data.map((user) => {
+            return {
+                _id: user.id,
+                email: user.emailAddresses[0]?.emailAddress || user.externalAccounts[0]?.emailAddress,
+                firstName: user.firstName || 'N/A',
+                lastName: user.lastName || '',
+                image: user.imageUrl,
+                role: user.publicMetadata?.role || "User",
+            }
+        })
+        // console.log(userList.data)
+        return users;
+    };
+    requestHandler(operation, res);
+});
+
+
+/********
+router.get("/new-accessjwt", async (req, res) => {
+    const { authorization } = req.headers;
+    const operation = async () => {
+        const decoded = await verifyRefreshJWT(authorization);
+        if (decoded?.email) {
+            const user = await getAUser({ email: decoded.email, refreshJWT: authorization });
+            if (user?._id) {
+                const accessJWT = signAccessToken({ email: decoded.email });
+                if (accessJWT) {
+                    return { status: "success", message: "Successfully logged in", accessJWT };
+                }
+            }
+        }
+        throw new Error("Unauthorized");
+    };
+    requestHandler(operation, res);
+});
+
+router.delete("/logout", auth, async (req, res) => {
+    const { email } = req.userInfo;
+    const operation = async () => {
+        await updateUser({ email }, { refreshJWT: '' });
+        await deleteManySession({ associate: email });
+        return { status: "success", message: "Logged out successfully" };
+    };
+    requestHandler(operation, res);
+});
+
+router.post("/otp", async (req, res) => {
+    const { email } = req.body;
+    const operation = async () => {
+        const user = await getUserByEmail(email);
+        if (user?._id) {
+            const token = otpGenerator();
+            const session = await insertToken({ token, type: 'otp', associate: email });
+            if (session?._id) {
+                emailOTP({ token, fName: user.fname, email });
+                return { status: "success", message: "If email exists in our system, we have sent you OTP in your email address." };
+            }
+        }
+        return { status: "error", message: "If email exists in our system, we have sent you OTP in your email address." };
+    };
+    requestHandler(operation, res);
+});
 
 router.post("/", newUserValidation, async (req, res) => {
     req.body.password = hashPassword(req.body.password);
@@ -69,59 +143,6 @@ router.post('/login', async (req, res) => {
         throw new Error('Invalid login details');
     };
     requestHandler(operation, res);
-});
-
-router.get("/", auth, async (req, res) => {
-    const operation = async () => {
-        req.userInfo.refreshJWT = undefined;
-        return { status: "success", message: "Successfully logged in", user: req.userInfo };
-    };
-    requestHandler(operation, res);
-});
-
-router.get("/new-accessjwt", async (req, res) => {
-    const { authorization } = req.headers;
-    const operation = async () => {
-        const decoded = await verifyRefreshJWT(authorization);
-        if (decoded?.email) {
-            const user = await getAUser({ email: decoded.email, refreshJWT: authorization });
-            if (user?._id) {
-                const accessJWT = signAccessToken({ email: decoded.email });
-                if (accessJWT) {
-                    return { status: "success", message: "Successfully logged in", accessJWT };
-                }
-            }
-        }
-        throw new Error("Unauthorized");
-    };
-    requestHandler(operation, res);
-});
-
-router.delete("/logout", auth, async (req, res) => {
-    const { email } = req.userInfo;
-    const operation = async () => {
-        await updateUser({ email }, { refreshJWT: '' });
-        await deleteManySession({ associate: email });
-        return { status: "success", message: "Logged out successfully" };
-    };
-    requestHandler(operation, res);
-});
-
-router.post("/otp", async (req, res) => {
-    const { email } = req.body;
-    const operation = async () => {
-        const user = await getUserByEmail(email);
-        if (user?._id) {
-            const token = otpGenerator();
-            const session = await insertToken({ token, type: 'otp', associate: email });
-            if (session?._id) {
-                emailOTP({ token, fName: user.fname, email });
-                return { status: "success", message: "If email exists in our system, we have sent you OTP in your email address." };
-            }
-        }
-        return { status: "error", message: "If email exists in our system, we have sent you OTP in your email address." };
-    };
-    requestHandler(operation, res);
-});
+}); *************/
 
 export default router;
