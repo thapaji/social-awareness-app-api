@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const operation = async () => {
+        console.log(req.body)
         const event = await insertEvent(req.body);
         if (event?._id) {
             return { status: "success", message: "Event created successfully", event };
