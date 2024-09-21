@@ -23,6 +23,11 @@ const CauseSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Created by is required'],
     },
+    image: {
+        type: String,
+        trim: true,
+        default: '',
+    },
     participants: [{
         userId: {
             type: mongoose.Schema.Types.ObjectId,

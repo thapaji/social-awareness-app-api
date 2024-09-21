@@ -9,6 +9,11 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    image: {
+        type: String,
+        trim: true,
+        default: '',
+    },
     cause: {
         causeId: {
             type: mongoose.Schema.Types.ObjectId,
