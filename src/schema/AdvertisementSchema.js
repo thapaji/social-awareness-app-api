@@ -35,11 +35,11 @@ const AdvertisementSchema = new mongoose.Schema({
     },
     startDate: {
         type: Date,
-        required: true
+        // required: true
     },
     endDate: {
         type: Date,
-        required: true
+        // required: true
     },
     status: {
         type: String,
