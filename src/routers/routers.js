@@ -3,6 +3,7 @@ import businessRouter from './businessRouter.js';
 import advertisementRouter from './advertisementRouter.js';
 import causeRouter from './causeRouter.js';
 import eventRouter from './eventRouter.js';
+import contactRouter from './contactRouter.js';
 
 export default [
     {
@@ -24,5 +25,9 @@ export default [
     {
         path: '/api/events',
         middlewares: [eventRouter],
+    },
+    {
+        path: '/api/contact',
+        middlewares: [contactRouter],
     },
 ];
