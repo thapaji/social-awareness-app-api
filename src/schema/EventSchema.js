@@ -34,11 +34,11 @@ const EventSchema = new mongoose.Schema({
         required: true,
     },
     participants: [{
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: [true, 'User ID is required']
-        },
+        // userId: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'User',
+        //     required: [true, 'User ID is required']
+        // },
         username: {
             type: String,
             required: true,
