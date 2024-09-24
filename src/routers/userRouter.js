@@ -1,15 +1,15 @@
 import express from 'express';
-import {
-    insertUser,
-    getUserByEmail,
-    updateUser
-} from '../models/UserModel.js';
-import { comparePassword, hashPassword } from "../utils/bcrypt.js";
-import { v4 as uuidv4 } from 'uuid';
-import { deleteManySession, deleteSession, insertToken } from "../models/SessionModel.js";
-import { emailVerificationMail, emailOTP } from '../utils/mailUtils.js';
-import { newUserValidation } from '../middlewares/joiValidation.js';
-import { auth } from '../middlewares/auth.js'
+// import {
+//     insertUser,
+//     getUserByEmail,
+//     updateUser
+// } from '../models/UserModel.js';
+// import { comparePassword, hashPassword } from "../utils/bcrypt.js";
+// import { v4 as uuidv4 } from 'uuid';
+// import { deleteManySession, deleteSession, insertToken } from "../models/SessionModel.js";
+// import { emailVerificationMail, emailOTP } from '../utils/mailUtils.js';
+// import { newUserValidation } from '../middlewares/joiValidation.js';
+// import { auth } from '../middlewares/auth.js'
 import { requestHandler } from '../utils/requestHandler.js';
 import { createClerkClient } from '@clerk/backend';
 
@@ -24,7 +24,7 @@ const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY 
 router.get('/', async (req, res) => {
     const { authorization } = req.headers;
     const operation = async () => {
-        const userList = await clerkClient.users.getUserList();
+        const userList = await clerkClient.users.getUserList({ limit: 100, offset: 0 });
         const users = userList.data.map((user) => {
             return {
                 _id: user.id,

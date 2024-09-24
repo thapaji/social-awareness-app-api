@@ -4,7 +4,7 @@ export const findById = (model, _id) => model.findById(_id);
 
 export const findOne = (model, filter) => model.findOne(filter);
 
-export const findAll = (model) => model.find();
+export const findAll = (model) => model.find().sort({ createdAt: -1 });
 
 export const updateById = (model, id, update) => model.findByIdAndUpdate(id, update, { new: true });
 
