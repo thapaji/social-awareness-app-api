@@ -8,6 +8,7 @@ import { DBConnection } from "./src/config/DBConnection.js";
 const app = express();
 
 const PORT = process.env.PORT || 8000;
+const host = '0.0.0.0';
 
 if (process.env.NODE_ENV !== 'production') {
     app.use(morgan("dev"));
@@ -52,6 +53,6 @@ app.use((error, req, res, next) => {
 
 /*********    run the server   ***********/
 
-app.listen(PORT, (error) => {
-    error ? console.log(error) : console.log(`Server is running`);
+app.listen(PORT,host, (error) => {
+    error ? console.log(error) : console.log(`Server is running on port`+PORT);
 });
