@@ -32,12 +32,17 @@ const CauseSchema = new mongoose.Schema({
         username: {
             type: String,
             required: true,
+        },
+        userId: {
+            type: String,
+            ref: 'User',
+            required: [true, 'User ID is required']
+        },
+        image:{
+            type: String,
+            trim: true,
+            default: '',
         }
-        // userId: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     ref: 'User',
-        //     required: [true, 'User ID is required']
-        // },
     }],
     comments: [{
         username: {
@@ -45,6 +50,10 @@ const CauseSchema = new mongoose.Schema({
             required: true,
         },
         comment: {
+            type: String,
+            default: '',
+        },
+        image: {
             type: String,
             default: '',
         }

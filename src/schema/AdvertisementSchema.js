@@ -45,7 +45,37 @@ const AdvertisementSchema = new mongoose.Schema({
         type: String,
         enum: ['active', 'inactive'],
         default: 'inactive'
-    }
+    },
+    lovers: [{
+        username: {
+            type: String,
+            required: true,
+        },
+        userId: {
+            type: String,
+            ref: 'User',
+            required: [true, 'User ID is required']
+        },
+        image: {
+            type: String,
+            trim: true,
+            default: '',
+        }
+    }],
+    comments: [{
+        username: {
+            type: String,
+            required: true,
+        },
+        comment: {
+            type: String,
+            default: '',
+        },
+        image: {
+            type: String,
+            default: '',
+        }
+    }],
 }, {
     timestamps: true,
 });

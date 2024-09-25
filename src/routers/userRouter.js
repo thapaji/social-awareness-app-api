@@ -16,8 +16,8 @@ import { createClerkClient } from '@clerk/backend';
 const router = express.Router();
 
 
-console.log(process.env.CLERK_FRONTEND_API)
-console.log(process.env.CLERK_SECRET_KEY)
+// console.log(process.env.CLERK_FRONTEND_API)
+// console.log(process.env.CLERK_SECRET_KEY)
 
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
