@@ -7,19 +7,44 @@ import {
     deleteCause
 } from '../models/CauseModel.js';
 import { requestHandler } from '../utils/requestHandler.js';
+import upload from '../config/multerConfig.js';
+import cloudinary from '../config/cloudinaryConfig.js';
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-    const operation = async () => {
-        const cause = await insertCause(req.body);
-        if (cause?._id) {
-            return { status: "success", message: "Cause created successfully", cause };
-        }
-        throw new Error("Unable to create cause");
-    };
-    requestHandler(operation, res);
+router.post("/", upload.single('image'), async (req, res) => {
+    try {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        const operation = async () => {
+            const { title, description, category, createdBy } = req.body;
+            const imageUrl = result.secure_url;
+
+            const causeData = {
+                title,
+                description,
+                category,
+                createdBy,
+                image: imageUrl,
+            };
+
+            const cause = await insertCause(causeData);
+
+            if (cause?._id) {
+                return { status: "success", message: "Cause created successfully", cause };
+            }
+
+            throw new Error("Unable to create cause");
+        };
+
+        requestHandler(operation, res);
+
+    } catch (error) {
+        console.error("Error uploading image or creating cause:", error);
+        return res.status(500).json({ message: "Error uploading image or creating cause" });
+    }
 });
+
+
 
 router.get("/", async (req, res) => {
     const operation = async () => {
