@@ -66,24 +66,63 @@ router.get("/:id", async (req, res) => {
     requestHandler(operation, res);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", upload.single('image'), async (req, res) => {
     const { id } = req.params;
+
+    const existingCause = await getACause({ _id: id });
+    console.log(existingCause)
+    let imageUrl = existingCause.image ? existingCause.image : '';
+
+    if (req.file) {
+        try {
+            if (existingCause && existingCause.image) {
+                const publicId = existingCause.image.split('/').pop().split('.')[0];
+                await cloudinary.uploader.destroy(publicId);
+            }
+            const uploadResult = await cloudinary.uploader.upload(req.file.path);
+            imageUrl = uploadResult.secure_url;
+        } catch (error) {
+            console.error("Error handling images:", error);
+            return res.status(500).json({ message: "Error handling images" });
+        }
+    }
+
+    const causeData = {
+        title: req.body.title,
+        description: req.body.description,
+        category: req.body.category,
+        createdBy: req.body.createdBy,
+        image: imageUrl,
+    };
+
     const operation = async () => {
-        const cause = await updateCauseById({ _id: id, obj: req.body });
+        const cause = await updateCauseById({ _id: id, obj: causeData });
         if (cause) {
             return { status: "success", message: "Cause updated successfully", cause };
         }
         throw new Error("Unable to update cause");
     };
+
     requestHandler(operation, res);
 });
 
 router.delete("/", async (req, res) => {
     const { ids } = req.body;
+
     const operation = async () => {
-        await deleteCause(ids);
-        return { status: "success", message: "Cause(s) deleted successfully" };
+        const causesToDelete = await getAllCauses();
+        const deletedCauses = await deleteCause(ids);
+
+        for (const cause of causesToDelete) {
+            if (ids.includes(cause._id.toString())) {
+                const publicId = cause.image.split("/").pop().split(".")[0];
+                await cloudinary.uploader.destroy(publicId);
+            }
+        }
+
+        return { status: "success", message: "Cause(s) and associated images deleted successfully" };
     };
+
     requestHandler(operation, res);
 });
 
