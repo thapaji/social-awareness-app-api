@@ -93,6 +93,8 @@ router.put("/:id", upload.single('image'), async (req, res) => {
         category: req.body.category,
         createdBy: req.body.createdBy,
         image: imageUrl,
+        participants: req.body.participants,
+        comments: req.body.comments,
     };
 
     const operation = async () => {

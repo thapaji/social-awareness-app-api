@@ -23,7 +23,7 @@ router.post("/", upload.single('image'), async (req, res) => {
     const operation = async () => {
         const advertisement = await insertAdvertisement(advertisementData);
         if (advertisement?._id) {
-            return { status: "success", message: "Advertisement created successfully", advertisement };
+            return { status: "success", message: "Advertisement created successfullyAdvertisement created successfully. Wait for Admin to activate this add before it shows up.", advertisement };
         }
         throw new Error("Unable to create advertisement");
     };
@@ -71,7 +71,7 @@ router.put("/:id", upload.single('image'), async (req, res) => {
     }
 
     const operation = async () => {
-        const { title, description, link, business, status } = req.body;
+        const { title, description, link, business, status, lovers, comments, ratings } = req.body;
 
         const updatedAdData = {
             title,
@@ -80,6 +80,9 @@ router.put("/:id", upload.single('image'), async (req, res) => {
             status,
             link,
             image: imageUrl,
+            lovers,
+            comments,
+            ratings
         };
 
         const updatedAd = await updateAdvertisementById({ _id: id, obj: updatedAdData });

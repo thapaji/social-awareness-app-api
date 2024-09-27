@@ -76,6 +76,26 @@ const AdvertisementSchema = new mongoose.Schema({
             default: '',
         }
     }],
+    ratings: [{
+        userId: {
+            type: String,
+            ref: 'User',
+            required: [true, 'User ID is required']
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        rating: {
+            type: Number,
+            min: [1, 'Rating must be at least 1'],
+            max: [5, 'Rating cannot exceed 5'],
+        },
+        image: {
+            type: String,
+            default: '',
+        }
+    }],
 }, {
     timestamps: true,
 });
